@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use Illuminate\Http\Request;
 
-
 class ActivityController extends Controller
 {
     // list all the activities
@@ -18,18 +17,16 @@ class ActivityController extends Controller
         $request->validate([
             "title" => "required",
             "description" => "required",
-            "status" => "required|in:pending, completed"
+            "status" => "required|in:pending,completed"
         ]);
 
         $activity = Activity::create($request->all());
 
-        return response()->json(Activity::all(), 201);
-
-        
+        return response()->json($activity, 201);
     }
 
     // view single activity
-     public function show($id){
+    public function show($id){
         $activity = Activity::find($id);
 
         if(!$activity){
@@ -43,7 +40,7 @@ class ActivityController extends Controller
     public function update(Request $request, $id){
         $activity = Activity::find($id);
 
-         if(!$activity){
+        if(!$activity){
             return response()->json(["message" => "Activity not found"], 404);
         }
 
@@ -51,17 +48,17 @@ class ActivityController extends Controller
 
         return response()->json($activity, 200);
     }
+
     // delete activity
-     public function delete($id){
+    public function delete($id){
         $activity = Activity::find($id);
 
-         if(!$activity){
+        if(!$activity){
             return response()->json(["message" => "Activity not found"], 404);
         }
 
-        $activity->delete($request->all());
+        $activity->delete();
 
-        return response()->json($activity, 200);
+        return response()->json(["message" => "Activity deleted"], 200);
     }
-
 }

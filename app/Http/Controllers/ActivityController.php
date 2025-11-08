@@ -8,9 +8,18 @@ use Illuminate\Http\Request;
 class ActivityController extends Controller
 {
     // list all the activities
-    public function index(){
-        return response()->json(Activity::all(), 200);
+    public function index(Request $request)
+{
+    $query = Activity::query();
+    
+    // filtered status
+    if ($request->has('status')) {
+        $query->where('status', $request->status);
     }
+
+    return response()->json($query->get(), 200);
+}
+
 
     // create activity
     public function store(Request $request){
